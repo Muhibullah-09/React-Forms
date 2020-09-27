@@ -33,6 +33,7 @@ const useStyles = makeStyles(theme => ({
         margin: theme.spacing(3, 0, 2)
     }
 }));
+
 interface Props {
     handleNext: () => void
 }
@@ -49,14 +50,13 @@ const Signup: React.FC<Props> = ({ handleNext }) => {
     };
 
     const validationSchema = Yup.object({
-        cnic: Yup.string().max(13).required('Required'),
-        username: Yup.string().required('Required'),
+        cnic: Yup.string().min( 13 , 'Must be 13 Characters').required('Must Required'),
         email: Yup.string().required('Required'),
-        password: Yup.string().min( 6 , 'Too Short').required('Password is required'),
-        confirmPassword: Yup.string().oneOf([Yup.ref('password')], 'Passwords must match')
-    });
-    
-    const onSubmit= (values: any) => {
+        password: Yup.string().min(6, 'Too Short').required('Password is required'),
+        confirmPassword: Yup.string().required().label('Confirm password').test('passwords-match', 'Password is not same', function(value) {return this.parent.password === value})
+    })
+
+    const onSubmit = (values: any) => {
         setTimeout(() => {
             console.log(JSON.stringify(values, null, 2));
             handleNext();
@@ -69,9 +69,9 @@ const Signup: React.FC<Props> = ({ handleNext }) => {
             <div className={classes.paper}>
                 <Typography component="h1" variant="h5">Sign up</Typography>
                 <Formik
-                      initialValues={initiaValues}
-                      validationSchema={validationSchema}
-                      onSubmit={onSubmit}
+                    initialValues={initiaValues}
+                    validationSchema={validationSchema}
+                    onSubmit={onSubmit}
                 >
                     {({ errors, handleChange, touched }) => (
                         <Form className={classes.form}>
@@ -79,7 +79,7 @@ const Signup: React.FC<Props> = ({ handleNext }) => {
                                 <Grid item xs={12}>
                                     <TextField
                                         autoComplete="cnic"
-                                        name="CNIC"
+                                        name="cnic"
                                         variant="outlined"
                                         fullWidth
                                         onChange={handleChange}
@@ -91,12 +91,11 @@ const Signup: React.FC<Props> = ({ handleNext }) => {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
-
                                         variant="outlined"
                                         fullWidth
                                         onChange={handleChange}
                                         id="username"
-                                        label="Uername"
+                                        label="Username"
                                         name="username"
                                         autoComplete="username"
                                         helperText={errors.userName && touched.userName ? errors.userName : null}
@@ -124,7 +123,7 @@ const Signup: React.FC<Props> = ({ handleNext }) => {
                                         type="password"
                                         id="password"
                                         autoComplete="current-password"
-                                        helperText={ errors.password && touched.password ? errors.password : null }
+                                        helperText={errors.password && touched.password ? errors.password : null}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
@@ -132,16 +131,23 @@ const Signup: React.FC<Props> = ({ handleNext }) => {
                                         variant="outlined"
                                         fullWidth
                                         onChange={handleChange}
-                                        name="confirm password"
+                                        name="confirmPassword"
                                         label="Confirm Password"
                                         type="password"
-                                        id="password"
-                                        autoComplete="current-password"
-                                        helperText={ errors.confirmPassword && touched.confirmPassword ? errors.confirmPassword : null }
+                                        id="confirmPassword"
+                                        autoComplete="confirmPassword"
+                                        helperText={errors.confirmPassword && touched.confirmPassword ? errors.confirmPassword : null}
                                     />
                                 </Grid>
                             </Grid>
-                            <Button type="submit" fullWidth variant="contained" style={{ backgroundColor: "gold" }} className={classes.submit}>Next</Button>
+                            <Button
+                                type="submit"
+                                fullWidth variant="contained"
+                                // style={{ backgroundColor: "lightgrey" }}
+                                className={classes.submit}
+                                >  
+                                Next
+                            </Button>
                         </Form>
                     )}
                 </Formik>

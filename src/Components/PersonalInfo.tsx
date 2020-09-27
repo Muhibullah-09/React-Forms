@@ -7,17 +7,9 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { Formik, Form } from "formik";
-import * as yup from "yup";
+import * as Yup from "yup";
 import { FormControl, FormControlLabel, Radio, RadioGroup } from "@material-ui/core";
 
-
-let PersonalSchema = yup.object().shape({
-    firstName: yup.string()
-        .max(15, 'Must be 15 characters or less')
-        .required('Required'),
-    LastName: yup.string().max(15, 'Must be 15 characters or less')
-        .required('Required'),
-});
 
 const useStyles = makeStyles(theme => ({
     "@global": {
@@ -52,6 +44,30 @@ interface Props {
 
 const PersonalInfo: React.FC<Props> = ({ handleNext }) => {
     const classes = useStyles();
+
+    const initialValues = {
+        firstName:"",
+        lastName:"",
+        fatherName:"",
+        dateOfBirth:"",
+        phoneNumber:"",
+        Address:"",
+    };
+
+    const validationSchema = Yup.object({
+        firstName: Yup.string().required('Required'),
+        lastName: Yup.string().required('Required'),
+        fatherName: Yup.string().required('Required'),
+        dateOfBirth: Yup.date().required('Required').nullable()
+    });
+
+    const onSubmit=(values: any) => {
+        setTimeout(() => {
+            console.log(JSON.stringify(values, null, 2));
+            handleNext();
+        }, 400);
+    };
+
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -60,27 +76,15 @@ const PersonalInfo: React.FC<Props> = ({ handleNext }) => {
                     Personal Information 
                </Typography>
                 <Formik
-                    initialValues={{
-                        FirstName: "",
-                        LastName: "",
-                        Address: "",
-                        Streat: ""
-                    }}
-                    validationSchema={PersonalSchema}
-                    onSubmit={(values) => {
-                        setTimeout(() => {
-                            console.log(JSON.stringify(values, null, 2));
-                            handleNext();
-                        }, 400);
-                    }}
-
+                    initialValues={initialValues}
+                    validationSchema={validationSchema}
+                    onSubmit={onSubmit}
                 >
                     {({ errors, handleChange, touched }) => (
                         <Form className={classes.form}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
-
                                         autoComplete="fname"
                                         name="firstName"
                                         variant="outlined"
@@ -89,16 +93,11 @@ const PersonalInfo: React.FC<Props> = ({ handleNext }) => {
                                         id="firstName"
                                         label="First Name"
                                         autoFocus
-                                        helperText={
-                                            errors.FirstName && touched.FirstName
-                                                ? errors.FirstName
-                                                : null
-                                        }
+                                        helperText={ errors.firstName && touched.firstName ? errors.firstName : null }
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
-
                                         variant="outlined"
                                         fullWidth
                                         onChange={handleChange}
@@ -106,11 +105,7 @@ const PersonalInfo: React.FC<Props> = ({ handleNext }) => {
                                         label="Last Name"
                                         name="LastName"
                                         autoComplete="lname"
-                                        helperText={
-                                            errors.LastName && touched.LastName
-                                                ? errors.LastName
-                                                : null
-                                        }
+                                        helperText={ errors.lastName && touched.lastName ? errors.lastName : null }
                                     />
                                 </Grid>
                                 <Grid xs={12} sm={4}>
@@ -123,7 +118,6 @@ const PersonalInfo: React.FC<Props> = ({ handleNext }) => {
                                     </FormControl></Grid>
                                 <Grid item xs={12}>
                                     <TextField
-
                                         variant="outlined"
                                         fullWidth
                                         onChange={handleChange}
@@ -131,27 +125,20 @@ const PersonalInfo: React.FC<Props> = ({ handleNext }) => {
                                         label="Home Address"
                                         name="Address"
                                         autoComplete="Address"
-                                        helperText={
-                                            errors.Address && touched.Address ? errors.Address : null
-                                        }
+                                        helperText={ errors.Address && touched.Address ? errors.Address : null }
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
-
                                         variant="outlined"
                                         fullWidth
                                         onChange={handleChange}
                                         name="Streat"
                                         label="Streat No:"
-                                        type="Atreat"
+                                        type="Atreat"   
                                         id="Streat"
                                         autoComplete="current-password"
-                                        helperText={
-                                            errors.Streat && touched.Streat
-                                                ? errors.Streat
-                                                : null
-                                        }
+                                        // helperText={ errors.Streat && touched.Streat ? errors.Streat : null }
                                     />
                                 </Grid>
                             </Grid>
@@ -159,10 +146,10 @@ const PersonalInfo: React.FC<Props> = ({ handleNext }) => {
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                style={{ backgroundColor: "gold" }}
+                                style={{ backgroundColor: "lightgrey" }}
                                 className={classes.submit}
                             >
-                                Proceed
+                                Next
                             </Button>
                         </Form>
                     )}
