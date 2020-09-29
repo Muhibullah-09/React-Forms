@@ -29,7 +29,7 @@ function getSteps() {
 function getStepContent(stepIndex:number,handleNext: () => void) {
   switch (stepIndex) {
     case 0:
-      return <Signup handleNext={handleNext}/>;  
+      // return <Signup handleNext={handleNext}/>;  
     case 1:
       return <PersonalInfo handleNext={handleNext}/>;
     case 2:

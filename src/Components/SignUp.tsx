@@ -51,7 +51,7 @@ const Signup: React.FC<Props> = ({ handleNext }) => {
 
     const validationSchema = Yup.object({
         cnic: Yup.string().min( 13 , 'Must be 13 Characters').required('Must Required'),
-        email: Yup.string().required('Required'),
+        email: Yup.string().email("Invalid email").required("Required"),
         password: Yup.string().min(6, 'Too Short').required('Password is required'),
         confirmPassword: Yup.string().required().label('Confirm password').test('passwords-match', 'Password is not same', function(value) {return this.parent.password === value})
     })
@@ -142,8 +142,8 @@ const Signup: React.FC<Props> = ({ handleNext }) => {
                             </Grid>
                             <Button
                                 type="submit"
-                                fullWidth variant="contained"
-                                // style={{ backgroundColor: "lightgrey" }}
+                                color="primary"
+                                variant="contained"
                                 className={classes.submit}
                                 >  
                                 Next
