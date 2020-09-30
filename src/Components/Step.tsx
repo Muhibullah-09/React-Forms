@@ -21,10 +21,9 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
     textAlign: 'center'
   },
-  button: {
-    
-
-}
+  container:{
+    textAlign:'center'
+  }
 }));
 
 function getSteps() {
@@ -68,9 +67,9 @@ export default function StepComponent() {
       </Stepper>
       <div>
         {activeStep === steps.length ? (
-          <div>
+          <div className={classes.container}>
             <Typography className={classes.instructions}><h1>Steps are Completed</h1></Typography>
-            <Button onClick={handleReset} className={classes.button}>Reset</Button>
+            <Button onClick={handleReset} style={{ backgroundColor: "lightblue" , textAlign:'center'}}>Create New Account</Button>
           </div>
         ) : (
             <div>
