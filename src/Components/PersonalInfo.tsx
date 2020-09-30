@@ -66,13 +66,12 @@ const PersonalInfo: React.FC<Props> = ({ handleNext }) => {
         firstName: Yup.string().required('Required'),
         lastName: Yup.string().required('Required'),
         fatherName: Yup.string().required('Required'),
-        dateOfBirth: Yup.date().required('Required').nullable(),
-        phoneNumber: Yup.number()
-            .typeError("That doesn't look like a phone number")
-            .positive("A phone number can't start with a minus")
-            .integer("A phone number can't include a decimal point")
-            .min(11, 'eg: 01233456789').required('Required'),
-        address: Yup.string().required('Required')
+        phoneNumber: Yup.number().min(11, 'eg: 01233456789').required('Required'),
+        // .typeError("That doesn't look like a phone number")
+        // .positive("A phone number can't start with a minus")
+        // .integer("A phone number can't include a decimal point")
+        // .min(11, 'eg: 01233456789').required('Required'),
+        // address: Yup.string().required('Required')
 
     });
 
@@ -82,8 +81,6 @@ const PersonalInfo: React.FC<Props> = ({ handleNext }) => {
             handleNext();
         }, 400);
     };
-
-
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -107,7 +104,6 @@ const PersonalInfo: React.FC<Props> = ({ handleNext }) => {
                                         onChange={handleChange}
                                         id="firstName"
                                         label="First Name"
-                                        autoFocus
                                         helperText={errors.firstName && touched.firstName ? errors.firstName : null}
                                     />
                                 </Grid>
@@ -119,7 +115,6 @@ const PersonalInfo: React.FC<Props> = ({ handleNext }) => {
                                         onChange={handleChange}
                                         id="lastName"
                                         label="Last Name"
-                                        autoFocus
                                         helperText={errors.lastName && touched.lastName ? errors.lastName : null}
                                     />
                                 </Grid>
@@ -131,7 +126,6 @@ const PersonalInfo: React.FC<Props> = ({ handleNext }) => {
                                         onChange={handleChange}
                                         id="fatherName"
                                         label="Father Name"
-                                        autoFocus
                                         helperText={errors.fatherName && touched.fatherName ? errors.fatherName : null}
                                     />
                                 </Grid>
@@ -155,7 +149,6 @@ const PersonalInfo: React.FC<Props> = ({ handleNext }) => {
                                         onChange={handleChange}
                                         id="phoneNumber"
                                         label="Phone Number"
-                                        autoFocus
                                         helperText={errors.phoneNumber && touched.phoneNumber ? errors.phoneNumber : null}
                                     />
                                 </Grid>
@@ -174,8 +167,8 @@ const PersonalInfo: React.FC<Props> = ({ handleNext }) => {
                             </Grid>
                             <Button
                                 type="submit"
-                                variant="outlined"
-                                color="secondary"
+                                variant="contained"
+                                color="primary"
                                 className={classes.submit}
                             >
                                 Next

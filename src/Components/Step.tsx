@@ -19,21 +19,26 @@ const useStyles = makeStyles((theme) => ({
   instructions: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
+    textAlign: 'center'
   },
+  button: {
+    
+
+}
 }));
 
 function getSteps() {
   return ['SignUp', 'Personal', 'Registration'];
 }
 
-function getStepContent(stepIndex:number,handleNext: () => void) {
+function getStepContent(stepIndex: number, handleNext: () => void) {
   switch (stepIndex) {
     case 0:
-      // return <Signup handleNext={handleNext}/>;  
+      return <Signup handleNext={handleNext} />;
     case 1:
-      return <PersonalInfo handleNext={handleNext}/>;
+      return <PersonalInfo handleNext={handleNext} />;
     case 2:
-      return <Registration handleNext={handleNext}/>;
+      return <Registration handleNext={handleNext} />;
     default:
       return 'Error';
   }
@@ -45,7 +50,6 @@ export default function StepComponent() {
   const steps = getSteps();
 
   const handleNext = () => {
-      console.log("Clicking Next")
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
@@ -66,13 +70,13 @@ export default function StepComponent() {
         {activeStep === steps.length ? (
           <div>
             <Typography className={classes.instructions}><h1>Steps are Completed</h1></Typography>
-            <Button onClick={handleReset}  style={{backgroundColor:"gold"}}>Reset</Button>
+            <Button onClick={handleReset} className={classes.button}>Reset</Button>
           </div>
         ) : (
-          <div>
-            <Typography className={classes.instructions}>{getStepContent(activeStep,handleNext)}</Typography>
-          </div>
-        )}
+            <div>
+              <Typography className={classes.instructions}>{getStepContent(activeStep, handleNext)}</Typography>
+            </div>
+          )}
       </div>
     </div>
   );
