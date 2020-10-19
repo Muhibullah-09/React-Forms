@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
@@ -40,7 +40,7 @@ interface Props {
 
 const Signup: React.FC<Props> = ({ handleNext }) => {
     const classes = useStyles();
-
+    const [ data , setData ] = useState("");
     const initiaValues = {
         cnic: "",
         userName: "",
@@ -50,18 +50,33 @@ const Signup: React.FC<Props> = ({ handleNext }) => {
     };
 
     const validationSchema = Yup.object({
-        cnic: Yup.string().min( 13 , 'Must be 13 Characters').required('Must Required'),
+        cnic: Yup.string().min( 13 , 'Must be 13 Characters').max(13).required('Must Required'),
         email: Yup.string().email("Invalid email").required("Required"),
         password: Yup.string().min(6, 'Too Short').required('Password is required'),
         confirmPassword: Yup.string().required().label('Confirm password').test('passwords-match', 'Password is not same', function(value) {return this.parent.password === value})
     })
 
-    const onSubmit = (values: any) => {
-        setTimeout(() => {
-            console.log(JSON.stringify(values, null, 2));
-            handleNext();
-        }, 400);
-    };
+
+    const onSubmit=(values: any)=>{
+        console.log(values);
+        fetch(`/.netlify/functions/add-data`, {
+          method: 'post',
+          body: JSON.stringify(values)
+        })
+      .then(response => response.json())
+      .then(data => {
+        setData(data);
+        console.log("Data: " + JSON.stringify(data));
+        handleNext();
+      });
+    }
+
+    // const onSubmit = (values: any) => {
+    //     setTimeout(() => {
+    //         console.log(JSON.stringify(values, null, 2));
+    //         handleNext();
+    //     }, 400);
+    // };
 
     return (
         <Container component="main" maxWidth="xs">
